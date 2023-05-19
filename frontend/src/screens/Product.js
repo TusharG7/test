@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Card, Col } from "react-bootstrap";
+import { Button, Card, Container, Row } from "react-bootstrap";
 import axios from "axios";
-
 const Products = () => {
   const [products, setProducts] = useState([]);
   const params = useParams();
@@ -11,35 +10,37 @@ const Products = () => {
       .get(`http://localhost:3004/api/categories/${params.name}`)
       .then(({ data }) => setProducts(data))
       .catch((err) => console.log(err));
-  }, []);
-  //   useEffect(() => {
-  //     axios
-  //       .get(`http://localhost:3004/api/categories/${params.name}`)
-  //       .then(({ data }) => setProducts(data))
-  //       .catch((err) => console.log(err));
-  //   }, [params.name]);
+  }, [params.name]);
 
   return (
     <>
-      <div style={{ display: "grid", justifyItems: "center" }}>
-        <Link to={`/`} style={{ margin: "10px" }}>
-          Go Back
-        </Link>
-        <Button style={{ margin: "10px" }}>Create Product</Button>
+      <Container>
+        <Row className="m-5">
+          <Link to={`/`} className="mr-auto hover">
+            Go Back
+          </Link>
+          <Button>Create Product</Button>
+        </Row>
         <h2>Product List :: {params.name}</h2>
         {products.map((product) => {
           return (
-            <Col>
-              <Link to={`/product/${product.name}`} key={product._id}>
-                <Card.Title as="div">
-                  <strong>{product.name}</strong>
-                </Card.Title>
-              </Link>
-              <Card.Text as="h3">${product.price}</Card.Text>
-            </Col>
+            <Card className="my-3 p-3 rounded">
+              <Card.Body>
+                <Link to={`/product/${product._id}`}>
+                  <Card.Title as="div">
+                    <strong>{product.name}</strong>
+                  </Card.Title>
+                </Link>
+
+                <Card.Text as="h3">${product.price}</Card.Text>
+              </Card.Body>
+
+              <Button variant="info">edit</Button>
+              <Button variant="danger">delete</Button>
+            </Card>
           );
         })}
-      </div>
+      </Container>
     </>
   );
 };

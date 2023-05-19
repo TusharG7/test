@@ -1,4 +1,4 @@
-const categories = [
+let categories = [
   {
     _id: 101,
     name: "Electronics",

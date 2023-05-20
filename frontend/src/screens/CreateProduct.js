@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Form, Button, Container } from "react-bootstrap";
 
 import axios from "axios";
@@ -7,17 +7,20 @@ import axios from "axios";
 const CreateProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
+  //   const params = useParams();
+  //   const [category_name, setCategoryName] = useState("");
 
   const history = useNavigate();
 
   const submitHandler = (e) => {
+    // setCategoryName(params.name);
     e.preventDefault();
 
     try {
       axios
         .post("http://localhost:3004/api/categories/:name", { name, price })
         .then(() => {
-          history("/categories/:name");
+          history(`/`);
         });
     } catch (error) {
       console.log(error);

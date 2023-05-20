@@ -5,11 +5,11 @@ import cors from "cors";
 const app = express();
 const port = 3004;
 app.use(express.json());
-// app.use(
-//   cors({
-//     origin: "*",
-//   })
-// );
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 //Routes
 

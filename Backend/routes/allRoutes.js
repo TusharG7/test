@@ -17,7 +17,11 @@ router
   .put(updateProductOfCategory)
   .delete(deleteProductFromCategory);
 
-router.route("/create").post(createCategory);
-router.route("/").get(getCategories).delete(deleteCategory).put(updateCategory);
+router
+  .route("/")
+  .post(createCategory)
+  .get(getCategories)
+  .delete(deleteCategory)
+  .put(updateCategory);
 
 export default router;

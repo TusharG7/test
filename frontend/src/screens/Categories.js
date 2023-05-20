@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, Container, Row, Button } from "react-bootstrap";
 const Categories = () => {
   const [categories, setCategories] = useState([]);
+  const history = useNavigate();
 
   useEffect(() => {
     axios
@@ -13,10 +14,15 @@ const Categories = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  const createHandler = (e) => {
+    e.preventDefault();
+    history("/categories/create");
+  };
+
   return (
     <Container>
       <Row className="m-3">
-        <Button>Create Category</Button>
+        <Button onClick={(e) => createHandler(e)}>Create Category</Button>
       </Row>
       {categories.map((category) => {
         return (

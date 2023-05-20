@@ -10,7 +10,9 @@ const getCategories = async (req, res) => {
 // Fetch Products of specific Category
 // GET /api/categories/:name
 const getProductsOfCategory = async (req, res) => {
-  const category = categories.find((c) => c._id === req.body.id);
+  const pageSize = 10;
+  const page = Number(req.query.pageNumber) || 1;
+  const category = categories.find((c) => c.name === req.params.name);
   if (category) {
     res.json(category.products);
   } else {
@@ -19,7 +21,7 @@ const getProductsOfCategory = async (req, res) => {
 };
 
 // Create a new category
-// POST /api/categories/create
+// POST /api/categories/
 const createCategory = async (req, res) => {
   const { name } = req.body;
   const category = {
@@ -37,7 +39,7 @@ const createCategory = async (req, res) => {
 const createProductForCategory = async (req, res) => {
   try {
     const { name, price, id } = req.body;
-    const category = categories.find((c) => c._id == id);
+    const category = categories.find((c) => c.name == req.params.name);
     const product = {
       _id: Math.floor(Math.random() * 700 + 1),
       name: name,
@@ -71,17 +73,17 @@ const deleteCategory = async (req, res) => {
 const deleteProductFromCategory = async (req, res) => {
   try {
     const category = categories.find((c) => c.name == req.params.name);
-    if (category) {
-      const products = category.products;
-      if (products) {
-        const updatedProducts = products.filter(
-          (product) => product._id == req.body.product_id
-        );
 
-        res.json(updatedProducts);
-      }
-    }
-    res.send({ message: "Could not find required data" });
+    const products = category.products;
+    const index = products.findIndex(
+      (product) => product._id == req.body.product_id
+    );
+
+    category.products.splice(index, 1);
+
+    res.json(products);
+
+    // res.send({ message: "Could not find required data" });
   } catch (error) {
     res.json(error);
   }

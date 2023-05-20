@@ -1,5 +1,5 @@
 import express from "express";
-import categoriesRoutes from "./routes/allRoutes.js";
+import allRoutes from "./routes/allRoutes.js";
 import cors from "cors";
 
 const app = express();
@@ -14,7 +14,7 @@ app.use(
 //Routes
 
 // app.use("/api/categories/:name", productsRoutes);
-app.use("/api/categories", categoriesRoutes);
+app.use("/api/categories", allRoutes);
 // app.use("/api", (req, res) => res.send({ message: "Api is working" }));
 
 //Server

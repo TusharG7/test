@@ -2,16 +2,18 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Card, Container, Row, Button } from "react-bootstrap";
+import { Card, Container, Row, Button, Col } from "react-bootstrap";
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const history = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3004/api/categories")
-      .then(({ data }) => setCategories(data))
-      .catch((err) => console.log(err));
+    const getCategoriesData = async () => {
+      const { data } = await axios.get("/api/categories/allCategories");
+      console.log(data);
+      setCategories(data);
+    };
+    getCategoriesData();
   }, []);
 
   const createHandler = (e) => {
@@ -19,27 +21,50 @@ const Categories = () => {
     history("/categories/create");
   };
 
+  const handleDelete = async (id) => {
+    await axios.delete(`/api/categories/${id}`);
+  };
+
   return (
-    <Container>
-      <Row className="m-3">
-        <Button onClick={(e) => createHandler(e)}>Create Category</Button>
-      </Row>
-      {categories.map((category) => {
-        return (
-          <Card className="my-3 p-3 rounded">
-            <Card.Body>
-              <Link to={`/categories/${category.name}`} key={category._id}>
-                <Card.Title as="div">
-                  <strong>{category.name}</strong>
-                </Card.Title>
-              </Link>
-            </Card.Body>
-            <Button variant="info">edit</Button>
-            <Button variant="danger">delete</Button>
-          </Card>
-        );
-      })}
-    </Container>
+    <>
+      <Container className="justify-content-center p-2">
+        <Row className="m-3">
+          <Button onClick={(e) => createHandler(e)}>Create Category</Button>
+        </Row>
+        <h1 className="text-center">All Categories</h1>
+        <hr />
+
+        <Row>
+          {categories.map((category) => {
+            return (
+              <Col md={6} lg={4} sm={12} key={category.id}>
+                <Card className="my-3 p-3 rounded">
+                  <Card.Body>
+                    <Link to={`/categories/${category.id}/products`}>
+                      <Card.Title as="div">
+                        <strong>{category.name}</strong>
+                      </Card.Title>
+                    </Link>
+                  </Card.Body>
+                  <Button
+                    variant="info"
+                    onClick={() => history(`/categories/${category.id}`)}
+                  >
+                    edit
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(category.id)}
+                  >
+                    delete
+                  </Button>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      </Container>
+    </>
   );
 };
 

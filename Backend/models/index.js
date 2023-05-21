@@ -39,13 +39,13 @@ db.sequelize.sync({ force: false }).then(() => {
 // 1 to Many Relation
 
 db.categories.hasMany(db.products, {
-  foreignKey: "product_id",
+  foreignKey: "category_id",
   as: "product",
 });
 
 db.products.belongsTo(db.categories, {
   foreignKey: "category_id",
-  as: "product",
+  as: "category",
 });
 
-export default db;
+module.exports = db;

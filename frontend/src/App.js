@@ -1,22 +1,35 @@
 import "./App.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Categories from "./screens/Categories";
+import CreateUpdateForm from "./screens/CreateUpdateForm";
 import Products from "./screens/Product";
-import CreateCategory from "./screens/CreateCategory";
-import CreateProduct from "./screens/CreateProduct";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/categories/:name" element={<Products />} exact />
         <Route
-          path="/categories/:name/create"
-          element={<CreateProduct />}
+          path="/categories/create"
+          element={<CreateUpdateForm Category={true} Create={true} />}
+          exact
+        />
+        <Route
+          path="/categories/:id"
+          element={<CreateUpdateForm Category={true} Update={true} />}
+          exact
+        />
+        <Route path="/categories/:id/products" element={<Products />} exact />
+        <Route
+          path="/products/:id"
+          element={<CreateUpdateForm Product={true} Update={true} />}
+          exact
+        />
+        <Route
+          path="/categories/:id/products/create"
+          element={<CreateUpdateForm Product={true} Create={true} />}
           exact
         />
         <Route path="/" element={<Categories />} exact />
-        <Route path="/categories/create" element={<CreateCategory />} exact />
       </Routes>
     </Router>
   );

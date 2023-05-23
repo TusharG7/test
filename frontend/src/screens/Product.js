@@ -3,15 +3,23 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 
 import axios from "axios";
+import Paginate from "../components/Paginate";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const params = useParams();
+  const pageNumber = params.pageNumber || 1;
+  const [page, setPage] = useState(0);
+  const [pages, setPages] = useState(0);
   const history = useNavigate();
   useEffect(() => {
     const getProductsData = async () => {
-      const { data } = await axios.get(`/api/categories/${params.id}`);
-      console.log(data[0].product);
-      setProducts(data[0].product);
+      const { data } = await axios.get(
+        `/api/categories/${params.id}?pageNumber=${pageNumber}`
+      );
+      console.log(data);
+      setProducts(data.products[0].product);
+      setPage(data.page);
+      setPages(data.pages);
     };
     getProductsData();
   }, []);
@@ -52,7 +60,7 @@ const Products = () => {
                     </Card.Body>
                     <Button
                       variant="info"
-                      onClick={() => history(`/${product.id}`)}
+                      onClick={() => history(`${product.id}`)}
                     >
                       edit
                     </Button>
@@ -91,6 +99,7 @@ const Products = () => {
                 // </Card>
               );
             })}
+          <Paginate page={page} pages={pages} />
         </Row>
       </Container>
     </>

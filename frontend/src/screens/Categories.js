@@ -40,7 +40,7 @@ const Categories = () => {
               <Col md={6} lg={4} sm={12} key={category.id}>
                 <Card className="my-3 p-3 rounded">
                   <Card.Body>
-                    <Link to={`/categories/${category.id}/products`}>
+                    <Link to={`/categories/${category.id}/products/1`}>
                       <Card.Title as="div">
                         <strong>{category.name}</strong>
                       </Card.Title>

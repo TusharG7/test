@@ -18,14 +18,18 @@ function App() {
           element={<CreateUpdateForm Category={true} Update={true} />}
           exact
         />
-        <Route path="/categories/:id/products" element={<Products />} exact />
         <Route
-          path="/products/:id"
+          path="/categories/:id/products/:pageNumber"
+          element={<Products />}
+          exact
+        />
+        <Route
+          path="/categories/:id/products/:pageNumber/:productId"
           element={<CreateUpdateForm Product={true} Update={true} />}
           exact
         />
         <Route
-          path="/categories/:id/products/create"
+          path="/categories/:id/products/:pageNumber/create"
           element={<CreateUpdateForm Product={true} Create={true} />}
           exact
         />

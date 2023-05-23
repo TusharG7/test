@@ -75,18 +75,26 @@ const addProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   const id = req.params.id;
+  const pageSize = 2;
+  const page = Number(req.query.pageNumber) || 1;
 
   const products = await Category.findAll({
     include: [
       {
         model: Product,
         as: "product",
+        limit: pageSize,
+        offset: pageSize * (page - 1),
       },
     ],
     where: { id: id },
   });
-
-  res.status(200).send(products);
+  console.log(products[0].product.length);
+  res.status(200).send({
+    products,
+    page,
+    pages: Math.ceil(products[0].product.length / pageSize) + 1,
+  });
 };
 
 const getOneProduct = async (req, res) => {
